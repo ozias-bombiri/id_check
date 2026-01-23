@@ -6,11 +6,13 @@ import { AideComponent } from './aide/aide.component';
 import { ConnexionComponent } from './connexion/connexion.component';
 import { VerificationResultatComponent } from './verification-resultat/verification-resultat.component';
 import { authGuard } from './auth.guard';
+import {RegisterComponent} from "./register/register.component";
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
   { path: 'verifier', component: VerificationComponent, canActivate: [authGuard] },
   { path: 'historique', component: HistoriqueComponent, canActivate: [authGuard] },
   { path: 'aide', component: AideComponent },
-  { path: 'connexion', component: ConnexionComponent }
+  { path: 'connexion', component: ConnexionComponent },
+  { path: 'register', component: RegisterComponent },
 ];
