@@ -7,6 +7,17 @@ import { ConnexionComponent } from './connexion/connexion.component';
 import { VerificationResultatComponent } from './verification-resultat/verification-resultat.component';
 import { authGuard } from './auth.guard';
 import {RegisterComponent} from "./register/register.component";
+import { UsersComponent } from './admin/users/users.component';
+import { ProfilesComponent } from './admin/profiles/profiles.component';
+import { RolesComponent } from './admin/roles/roles.component';
+import { VehiculeComponent } from './admin/vehicule/vehicule.component';
+import { LocaliteComponent } from './parametre/localite/localite.component';
+import { CompagnieComponent } from './parametre/compagnie/compagnie.component';
+import { TypesVehiculesComponent } from './parametre/types-vehicules/types-vehicules.component';
+import { LogoutComponent } from './logout/logout.component';
+import { AxeComponent } from './axe/axe.component';
+import { TrajetComponent } from './trajet/trajet.component';
+import { PassagerComponent } from './passager/passager.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -15,4 +26,16 @@ export const routes: Routes = [
   { path: 'aide', component: AideComponent },
   { path: 'connexion', component: ConnexionComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'admin/utilisateurs', component: UsersComponent },
+  { path: 'admin/profiles', component: ProfilesComponent },
+  { path: 'admin/roles', component: RolesComponent },
+  { path: 'compagnie/vehicules', component: VehiculeComponent },
+  { path: 'param/localites', component: LocaliteComponent },
+  { path: 'param/compagnies', component: CompagnieComponent },
+  { path: 'param/types-vehicules', component: TypesVehiculesComponent },
+  {path: 'vehicules', component: VehiculeComponent, canActivate: [authGuard] },
+  {path: 'logout', component: LogoutComponent, canActivate: [authGuard] },
+  {path: 'axes', component: AxeComponent, canActivate: [authGuard] },
+  {path: 'trajets', component: TrajetComponent, canActivate: [authGuard] },
+  {path: 'passagers', component: PassagerComponent, canActivate: [authGuard] },
 ];
