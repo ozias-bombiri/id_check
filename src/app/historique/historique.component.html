@@ -1,0 +1,42 @@
+<div class="historique">
+	<h2>Historique des vérifications</h2>
+
+	<div class="center">
+		<mat-spinner *ngIf="loading" diameter="40"></mat-spinner>
+	</div>
+
+	<div *ngIf="error" class="error">{{ error }}</div>
+
+	<div *ngIf="!loading && items?.length === 0" class="empty">Aucune vérification trouvée.</div>
+
+	<div *ngIf="!loading && items?.length" class="table-wrap">
+		<table class="history-table">
+			<thead>
+				<tr>
+					<th>Numéro</th>
+					<th>Date</th>
+					<th>Utilisateur</th>
+					<th>Résultat</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let it of pagedItems">
+					<td>{{ it.numero }}</td>
+					  <td>{{ it.createdAt ? (it.createdAt | date:'yyyy-MM-dd HH:mm:ss') : '-' }}</td>
+					<td>{{ it.utilisateur?.username || '-' }}</td>
+					<td>{{ it.resultat?.idCheckResult === 1 ? 'OK' : 'NON' }}</td>
+					<td class="actions-cell">
+						<button mat-stroked-button color="primary" (click)="openDetails(it)">Voir</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="pager" *ngIf="items?.length">
+		<mat-paginator [length]="items.length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[10]" (page)="onPage($event)">
+		</mat-paginator>
+	</div>
+
+</div>

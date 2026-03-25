@@ -1,0 +1,46 @@
+
+<mat-card class="personne-id-card" *ngIf="personne">
+
+  <div class="id-card">
+    <div class="left">
+      <div class="photo">
+        <img [src]="photoBase64" alt="Photo de {{ personne.prenom }} {{ personne.nom }}">
+      </div>
+      <div class="id-meta">
+        <div class="id-label">ID</div>
+        <div class="id-value">{{ personne.numero }}</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="brand">PORTAIL IDCHECK</div>
+      <div class="name">{{ personne.prenom }} {{ personne.nom }}</div>
+      <div class="role">{{ personne.profession }} &middot; {{ personne.role }}</div>
+
+      <div class="info-block">
+        <div class="info-item">
+          <div class="label">Email</div>
+          <div class="value">{{ personne.email }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Naissance</div>
+          <div class="value">{{ personne.dateNaissance | date:'dd/MM/yyyy' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Lieu</div>
+          <div class="value">{{ personne.lieuNaissance }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Taille</div>
+          <div class="value">{{ personne.taille }} cm</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Sexe</div>
+          <div class="value">{{ personne.sexe }}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</mat-card>

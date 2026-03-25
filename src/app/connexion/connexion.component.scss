@@ -1,0 +1,74 @@
+/* Styles for connexion form */
+.connexion {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: calc(100vh - 80px);
+	padding: 24px;
+}
+
+.login-form {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.actions {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+}
+
+.error {
+	color: #b91c1c;
+	margin-top: 8px;
+}
+
+.conn-card {
+	width: 100%;
+	max-width: 420px;
+	background: #ffffff;
+	border-radius: 12px;
+	box-shadow: 0 6px 24px rgba(15, 23, 42, 0.12);
+	padding: 24px;
+}
+
+.brand {
+	text-align: center;
+	margin-bottom: 12px;
+}
+
+.brand img {
+	height: 44px;
+	margin-bottom: 8px;
+}
+
+.brand h2 {
+	margin: 0;
+	font-size: 1.25rem;
+}
+
+.subtitle {
+	color: #6b7280;
+	font-size: 0.9rem;
+	margin-top: 6px;
+}
+
+.full { width: 100%; }
+
+.meta {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 6px;
+}
+
+.forgot {
+	color: #2563eb;
+	text-decoration: none;
+	font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+	.conn-card { padding: 18px; border-radius: 10px; }
+}
+

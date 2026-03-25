@@ -1,0 +1,26 @@
+.compagnie-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.compagnie-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.full-width {
+  flex: 1 1 250px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-basis: 100%;
+}
+
+.compagnie-table {
+  width: 100%;
+}

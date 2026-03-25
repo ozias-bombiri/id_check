@@ -1,0 +1,46 @@
+<div class="connexion">
+	<div class="conn-card">
+		<div class="brand">
+			<img src="assets/images/logo_wuri_bf_final4.png" alt="Logo" />
+			<h2>Inscription</h2>
+			<p class="subtitle">S'inscrire au portail de vérification d'identité</p>
+		</div>
+
+		<form [formGroup]="loginForm" (ngSubmit)="submit()" class="login-form">
+            <mat-form-field appearance="outline" class="full">
+				<mat-label>Service | Organisation </mat-label>
+				<input matInput placeholder="Ex: checker1" formControlName="service" />
+			</mat-form-field>
+            <mat-form-field appearance="outline" class="full">
+				<mat-label>Nom </mat-label>
+				<input matInput placeholder="Ex: OUEDRAOGO" formControlName="nom" />
+			</mat-form-field>
+            <mat-form-field appearance="outline" class="full">
+				<mat-label>Prénom</mat-label>
+				<input matInput placeholder="Ex: Ali" formControlName="prenom" />
+			</mat-form-field>
+			<mat-form-field appearance="outline" class="full">
+				<mat-label>Email</mat-label>
+				<input matInput placeholder="Ex: checker1" formControlName="username" />
+			</mat-form-field>
+            
+
+			<mat-form-field appearance="outline" class="full">
+				<mat-label>Mot de passe</mat-label>
+				<input matInput placeholder="••••••" type="password" formControlName="password" />
+			</mat-form-field>
+
+			<div class="actions">
+				<button mat-flat-button color="primary" type="submit" [disabled]="loading">S'inscrire</button>
+				<mat-spinner *ngIf="loading" diameter="28"></mat-spinner>
+			</div>
+
+			<div class="meta">
+				<a class="forgot" routerLink="/connexion" routerLinkActive="active"> Déja un compte ? se connecter</a>
+			</div>
+
+			<div class="error" *ngIf="error">{{ error }}</div>
+		</form>
+	</div>
+</div>
+

@@ -1,0 +1,127 @@
+.home {
+  font-family: 'Segoe UI', sans-serif;
+  color: #1f2937;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  color: white;
+  padding: 5rem 1rem;
+  text-align: center;
+
+  .hero-content {
+    max-width: 600px;
+    margin: auto;
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      opacity: 0.9;
+
+      a {
+        text-decoration: none;
+        color: white;
+        font-size: larger;
+      }
+    }
+
+  }
+}
+
+/* FORMULAIRE */
+.verify-form {
+  display: flex;
+  gap: 0.5rem;
+
+  input {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+  }
+
+  button {
+    padding: 0.8rem 1.2rem;
+    background: #22c55e;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      background: #16a34a;
+    }
+  }
+}
+
+/* STEPS */
+.steps {
+  padding: 4rem 1rem;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 2rem;
+  }
+
+  .step-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+
+    .step {
+      background: #f9fafb;
+      padding: 2rem;
+      border-radius: 10px;
+
+      span {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background: #1e3a8a;
+        color: white;
+        border-radius: 50%;
+        line-height: 40px;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+/* TRUST */
+.trust {
+  background: #f1f5f9;
+  padding: 4rem 1rem;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 2rem;
+  }
+
+  .trust-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+
+    .trust-item {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+  }
+}
+
+ol{
+    align-items: left;
+}
+

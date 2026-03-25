@@ -1,0 +1,24 @@
+.localite-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.localite-form {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.full-width {
+  flex: 1 1 300px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.localite-table {
+  width: 100%;
+}

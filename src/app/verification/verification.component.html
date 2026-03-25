@@ -1,0 +1,56 @@
+<div class="home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Portail de Vérification d’Identité</h1>
+      <p>
+        Vérifiez instantanément l’identité d’un citoyen à partir de son
+        numéro d’identification unique.
+      </p>
+
+      <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()" class="verify-form" >
+        <input matInput id=numero type="text" formControlName="numero" placeholder="Entrez le numéro d’identification" />
+        
+        <button type="submit">Vérifier</button>
+        <small *ngIf="verifyForm.get('numero')?.touched && verifyForm.get('numero')?.invalid">
+                Numero invalide
+            </small>
+      </form>
+      
+      <div class="result-area">
+        <div *ngIf="loading" class="spinner-area">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+        <div *ngIf="foundPerson">
+          <app-personne-card [personne]="foundPerson"></app-personne-card>
+        </div>
+        <div *ngIf="!loading && errorMessage" class="not-found">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section class="steps">
+    <h2>Comment ça fonctionne</h2>
+    <div class="step-list">
+      <div class="step">
+        <span>1</span>
+        <p>Saisissez le numéro d’identification</p>
+      </div>
+      <div class="step">
+        <span>2</span>
+        <p>Le système analyse les données</p>
+      </div>
+      <div class="step">
+        <span>3</span>
+        <p>Les informations sont affichées instantanément</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
