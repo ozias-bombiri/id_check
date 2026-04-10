@@ -3,7 +3,7 @@ import { Localite } from './localite.model';
 import { TypeVehicule } from './type-vehicule.model';
 
 export interface Axe {
-  id?: string; // UUID
+  id: string; // UUID
   libelle: string;
   description: string;
   depart?: Localite;

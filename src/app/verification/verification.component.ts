@@ -9,6 +9,21 @@ import { PersonneCardComponent } from '../personne-card/personne-card.component'
 import { VerificationService, VerificationApiResponse } from '../services/verification.service';
 import { Personne } from '../models/Personne';
 
+export interface CheckRequest {
+
+  identifiant: string;
+  nom: string;
+  prenom: string;
+  dateNaissance: string;
+  userId?: any | null;
+
+}
+
+export interface CheckResponse {
+  checkResult: boolean;
+  libelleResult?: string | null;
+}
+
 @Component({
   selector: 'app-verification',
   standalone: true,
@@ -24,18 +39,19 @@ export class VerificationComponent {
               'x-api-key': 'pub_7e8ab6addbe263806611410d4b6a39cc3bdca11e844e43117abe51e7b4349b15',
               'x-reqres-env': 'prod'
             };
-  project_id= '908';    
-  
-  
+  project_id= '908';
+
+
 
   codeSent?: boolean;
 
   results?: string;
   loading = false;
-  foundPerson?: Personne | null;
+  isSucces = false;
   errorMessage?: string;
+  successMessage?: string;
 
-  
+
 
 
 
@@ -43,19 +59,26 @@ export class VerificationComponent {
 
   constructor(private http: HttpClient, private fb: FormBuilder, private verificationService: VerificationService){
         this.verifyForm = this.fb.group({
-          numero: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],          
-          
+          numero: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(12)]],
+          nom: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
+          prenom: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+          dateNaissance: ['', [Validators.required]],
         });
-    
+
     }
 
     async onSubmit(){
       this.errorMessage = undefined;
-      this.foundPerson = undefined;
       if(this.verifyForm.valid){
-        const numero = this.verifyForm.value.numero as string;
+
+        const requestPayload: CheckRequest = {
+          identifiant: this.verifyForm.value.numero,
+          nom: this.verifyForm.value.nom,
+          prenom: this.verifyForm.value.prenom,
+          dateNaissance: this.verifyForm.value.dateNaissance,
+        };
         this.loading = true;
-        const resp: VerificationApiResponse | null = await this.verificationService.findByNumero(numero);
+        const resp: CheckResponse | null = await this.verificationService.checkIdentifiant(requestPayload);
         this.loading = false;
         console.log('Verification response:', resp);
         if(!resp){
@@ -64,17 +87,19 @@ export class VerificationComponent {
         }
 
         // If API indicates a successful id check and provides a personne, show the card
-        const isFound = resp.resultat?.idCheckResult === 1 && !!resp.personne;
-        if(isFound && resp.personne){
-          this.foundPerson = resp.personne;
+        const isFound = resp.checkResult
+        if(isFound ){
+          this.isSucces = true;
+          this.successMessage = "Personne trouvée : " + (resp.libelleResult ?? 'Libellé non disponible');
         } else {
+          this.isSucces = false;
           this.errorMessage = 'Aucune personne trouvée pour ce numéro.';
         }
       } else {
-        this.errorMessage = 'Numéro invalide.';
+        this.errorMessage = 'Saisie invalide. Veuillez vérifier les champs et réessayer.';
       }
     }
-    
-    
+
+
 
 }

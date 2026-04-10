@@ -1,7 +1,7 @@
 
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +18,11 @@ import { Trajet, TrajetCreate } from '../models/trajet.model';
 import { TrajetService } from '../services/trajet.service';
 import { Vehicule } from '../models/vehicule.model';
 import { VehiculeService } from '../services/vehicule.service';
+import { PassagerCreate } from '../models/passager.model';
+import { PassagerService } from '../services/passager.service';
+import { VerificationService, VerificationApiResponse } from '../services/verification.service';
+import { Personne, PersonneCreate } from '../models/Personne';
+import { PassagerModalComponent } from '../passager-modal/passager-modal.component';
 
 
 @Component({
@@ -49,13 +54,22 @@ export class PassagerComponent implements OnInit {
   private readonly localiteService = inject(LocaliteService);
   private readonly vehiculeService = inject(VehiculeService);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly passagerService = inject(PassagerService);
+  private readonly verificationService = inject(VerificationService);
+  private dialog: MatDialog = inject(MatDialog);
+  passagerForm = this.fb.group({
 
-  trajetForm = this.fb.group({
+    departId: [''],
+    dateDepart: [{ value: '', disabled: true }],
+    heureDepart: [{ value: '', disabled: true }],
+    axe: [{ value: '', disabled: true }],
+    destinationId: [''],
+    trajetId: ['', [Validators.required]],
+    numero: [''],
+    nom: [{ value: '', disabled: true }],
+    prenom: [{ value: '', disabled: true }],
+    personneId: ['']
 
-    dateDepart: [''],
-    heureDepart: [''],
-    axeId: [''],
-    vehiculeId: ['']
   });
 
   isFormVisible = false;
@@ -84,33 +98,36 @@ export class PassagerComponent implements OnInit {
   showForm() {
     this.isFormVisible = true;
     this.editingId = null;
-    this.trajetForm.reset();
+    this.passagerForm.reset();
   }
 
   closeForm() {
     this.isFormVisible = false;
     this.editingId = null;
-    this.trajetForm.reset();
+    this.passagerForm.reset();
   }
 
   onSubmit() {
-    const raw = this.trajetForm.value as any;
-    const payload: TrajetCreate = {
-      dateDepart: new Date(raw.dateDepart),
-      heureDepart: raw.heureDepart,
-      axeId: raw.axeId,
-      vehiculeId: raw.vehiculeId
-    };
+    const raw = this.passagerForm .value as any;
+    const personne: PersonneCreate = {
+      nom: raw.nom,
+      prenom: raw.prenom,
+      numero: raw.numero,
+      id: raw.id
+    }
+    const payload: PassagerCreate = {
+      departId: raw.departId,
+      destinationId: raw.destinationId,
+      trajetId: raw.trajetId,
+      personne: personne,
 
+    };
+    console.debug('Submitting passager form with payload', payload);
     (async () => {
       try {
-        if (this.editingId) {
-          await this.trajetService.update(this.editingId, payload);
-          this.snackBar.open('Trajet mis à jour', 'OK', { duration: 2000 });
-        } else {
-          await this.trajetService.create(payload);
-          this.snackBar.open('Trajet ajouté', 'OK', { duration: 2000 });
-        }
+          await this.passagerService.create(payload);
+          this.snackBar.open('Passager ajouté', 'OK', { duration: 2000 });
+
         this.closeForm();
       } catch (e) {
         console.error(e);
@@ -119,34 +136,74 @@ export class PassagerComponent implements OnInit {
     })();
   }
 
-  editVehicule(trajet: Trajet) {
+  addPassager(trajet: Trajet) {
+    console.debug('Adding passager for trajet', trajet);
     this.editingId = trajet.id || null;
-    this.trajetForm.patchValue({
+    this.passagerForm.patchValue({
       dateDepart: trajet.dateDepart ? new Date(trajet.dateDepart).toISOString().substring(0, 10) : '',
-      heureDepart: trajet.heureDepart,
-      axeId: trajet.axe?.id,
-      vehiculeId: trajet.vehicule?.id,
+      trajetId: trajet.id,
+      heureDepart: trajet.heureDepart ? trajet.heureDepart : '',
+      axe: trajet.axe ? trajet.axe.libelle : ''
     });
     this.isFormVisible = true;
   }
 
-  deleteVehicule(id: string | number | undefined) {
-    if (!id) return;
+  listePassager(trajetId: string |  undefined) {
+    if (!trajetId) return;
 
-    const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?');
-    if (confirmation) {
+
       (async () => {
         try {
-          await this.trajetService.delete(String(id));
-          this.snackBar.open('Trajet supprimé', 'OK', { duration: 2000 });
+          const passagers = await this.passagerService.loadTrajet(String(trajetId));
+          //this.snackBar.open('Trajet supprimé', 'OK', { duration: 2000 });
+          console.debug('Passagers du trajet', passagers);
+          // 🔥 ouvrir modal
+          this.dialog.open(PassagerModalComponent, {
+            width: '600px',
+            data: { passagers }
+          });
         } catch (e) {
           console.error(e);
-          this.snackBar.open('Erreur suppression', 'OK', { duration: 3000 });
+          this.snackBar.open('Erreur recupération de la liste', 'OK', { duration: 3000 });
         }
       })();
-    }
+
   }
 
+  checkNumero(){
+    const numero = this.passagerForm.value.numero as string;
+    console.debug('Checking numero:', numero);
+
+    (async () => {
+      try {
+          const resp: VerificationApiResponse | null = await this.verificationService.findByNumero(numero);
+          console.debug('Verification response:', resp);
+          if(!resp  || resp.resultat?.idCheckResult === 0 ){
+            this.snackBar.open('Personne non trouvée. Veuillez renseigner manuellement.', 'OK', { duration: 3000 });
+            this.passagerForm.get('nom')?.setValue('');
+            this.passagerForm.get('prenom')?.setValue('');
+            this.passagerForm.get('nom')?.enable();
+            this.passagerForm.get('prenom')?.enable();
+          }
+          else {
+          // If API indicates a successful id check and provides a personne, show the card
+          const isFound = resp.resultat?.idCheckResult === 1 && !!resp.personne;
+          if(isFound && resp.personne){
+            this.passagerForm.get('nom')?.setValue(resp.personne.nom);
+            this.passagerForm.get('prenom')?.setValue(resp.personne.prenom);
+            this.passagerForm.get('nom')?.disable();
+            this.passagerForm.get('prenom')?.disable();
+            this.passagerForm.get('personneId')?.setValue(resp.personne.id);
+          }
+          //this.snackBar.open('Passager mis à jour', 'OK', { duration: 2000 });
+        }
+      } catch (e) {
+        console.error(e);
+        this.snackBar.open('Erreur serveur', 'OK', { duration: 3000 });
+      }
+    })();
+
+  }
 }
 
 

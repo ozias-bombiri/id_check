@@ -28,6 +28,14 @@ export class VehiculeService {
       const headers = {
         Authorization: `Bearer ${token}`
       };
+    const structureId = this.auth.getUserStructure();
+    console.debug('[VehiculeService] load called with structureId', structureId);
+    if(structureId) {
+       const url = `${this.baseUrl}?compagnieId=${encodeURIComponent(structureId ?? '')}`;
+       return this.http.get<Vehicule[]>(url, { headers }).pipe(
+      tap(items => this.items$.next(items ?? []))
+    );
+    }
     return this.http.get<Vehicule[]>(this.baseUrl, { headers }).pipe(
       tap(items => this.items$.next(items ?? []))
     );

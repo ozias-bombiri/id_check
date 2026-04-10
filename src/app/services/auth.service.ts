@@ -10,10 +10,10 @@ interface AuthResponse {
 }
 
 interface UserResponse {
-  id: number;
+  id: string;
   nom: string;
   prenom: string;
-  structure: string;
+  structureId: string;
   profile: any;
 
 }
@@ -27,6 +27,8 @@ export class AuthService {
   private readonly TOKEN_EXPIRY_KEY = 'auth_token_expiry';
   private readonly TOKEN_EXPIRY_TIME = 3600000;
   private readonly USER_PROFILE_KEY = 'user_profile';
+  private readonly USER_ID_KEY = 'user_id';
+  private readonly USER_STRUCTURE_KEY = 'user_structure';
 
   private readonly AUTH_URL = 'http://localhost:8089/api/auth/login';
   private readonly REGISTER_URL = 'http://localhost:8089/api/auth/register';
@@ -49,6 +51,16 @@ export class AuthService {
     return profile ? JSON.parse(profile) : null;
   }
 
+  // 🔥 helper
+  private getStoredUserId(): string | null {
+    return localStorage.getItem(this.USER_ID_KEY);
+  }
+
+  // 🔥 helper
+  private getStoredUserStructure(): string | null {
+    return localStorage.getItem(this.USER_STRUCTURE_KEY);
+  }
+
   async login(email: string, password: string): Promise<AuthResponse> {
   const body = { email, password };
   const res = await lastValueFrom(
@@ -62,6 +74,7 @@ export class AuthService {
     const expiryTime = Date.now() + this.TOKEN_EXPIRY_TIME;
     localStorage.setItem(this.TOKEN_EXPIRY_KEY, expiryTime.toString());
 
+
     // 2. récupérer user COMPLET
     const userInfos = await this.getUser(res.user_id);
     console.log('User infos retrieved after login :', userInfos);
@@ -71,6 +84,8 @@ export class AuthService {
         this.USER_PROFILE_KEY,
         JSON.stringify(userInfos.profile.libelle)
       );
+      localStorage.setItem(this.USER_ID_KEY,userInfos.id);
+      localStorage.setItem(this.USER_STRUCTURE_KEY, userInfos.structureId);
 
       // 4. notifier
       this.userProfileSubject.next(userInfos.profile.libelle);
@@ -143,6 +158,14 @@ export class AuthService {
 
   getProfile(): any {
     return this.getStoredProfile();
+  }
+
+  getUserId(): string | null {
+    return this.getStoredUserId();
+  }
+
+  getUserStructure(): string | null {
+    return this.getStoredUserStructure();
   }
 
   isTokenExpired(): boolean {

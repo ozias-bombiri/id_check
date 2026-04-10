@@ -1,5 +1,5 @@
 export interface Personne {
-    id: number;
+    id: string;
     numero: string;
     email: string;
     role: string;
@@ -11,5 +11,13 @@ export interface Personne {
     taille: number;
     profession : string;
     photo : string;
-    
+
+}
+
+export interface PersonneCreate {
+    id?: string;
+    numero: string;
+    nom: string;
+    prenom: string;
+
 }

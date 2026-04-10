@@ -13,6 +13,7 @@ export class PassagerService {
   protected readonly http = inject(HttpClient);
   private readonly baseUrl = EndpointConfig.BASE_URL + '/passagers';
   private readonly auth = inject(AuthService);
+  private readonly listPassagerUrl = EndpointConfig.BASE_URL + '/trajet/passagers';
 
   private readonly items$ = new BehaviorSubject<Passager[]>([]);
 
@@ -71,5 +72,19 @@ export class PassagerService {
     await firstValueFrom(this.http.delete<void>(`${this.baseUrl}/${id}`, { headers }));
     const current = this.items$.value.filter(i => i.id !== id);
     this.items$.next(current);
+  }
+
+  loadTrajet(trajetId: string) {
+    const token = this.auth.getToken();
+      if (!token) throw new Error('User not authenticated');
+
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+    return firstValueFrom( this.http.get<Passager[]>(this.listPassagerUrl, { headers,
+      params: {
+        trajetId
+      }
+     }));
   }
 }

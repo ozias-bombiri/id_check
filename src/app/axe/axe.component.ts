@@ -91,7 +91,7 @@ export class AxeComponent implements OnInit {
       departId: raw.departId,
       arriveId: raw.arriveId
     };
-
+    console.debug('[AxeComponent] form submitted', payload);
     (async () => {
       try {
         if (this.editingId) {

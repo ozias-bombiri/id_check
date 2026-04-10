@@ -18,6 +18,21 @@ export interface VerificationApiResponse {
   personne?: Personne | null;
 }
 
+export interface CheckRequest {
+
+  identifiant: string;
+  nom: string;
+  prenom: string;
+  dateNaissance: string;
+  userId?: any | null;
+
+}
+
+export interface CheckResponse {
+  checkResult: boolean;
+  libelleResult?: string | null;
+}
+
 @Injectable({ providedIn: 'root' })
 export class VerificationService {
   private readonly VERIFY_URL = 'http://localhost:8089/api/verifier';
@@ -33,10 +48,27 @@ export class VerificationService {
     const headers = token
       ? new HttpHeaders({ Authorization: `Bearer ${token}` })
       : undefined;
-
+    const userId = this.auth.getUserId();
     const url = `${this.VERIFY_URL}?numero=${encodeURIComponent(numero)}`;
     try {
       const obs = this.http.get<VerificationApiResponse>(url, { headers });
+      const resp = await lastValueFrom(obs);
+      return resp ?? null;
+    } catch (err) {
+      console.error('VerificationService.findByNumero error', err);
+      return null;
+    }
+  }
+
+  async checkIdentifiant(payload: CheckRequest): Promise<CheckResponse | null> {
+    const token = this.auth.getToken();
+    const headers = token
+      ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+      : undefined;
+    const userId = this.auth.getUserId();
+    payload.userId = userId;
+    try {
+      const obs = this.http.post<CheckResponse>(this.VERIFY_URL, payload, { headers });
       const resp = await lastValueFrom(obs);
       return resp ?? null;
     } catch (err) {
@@ -56,7 +88,7 @@ export class VerificationService {
 
     const url = `http://localhost:8089/api/verfications`;
     try {
-      const obs = this.http.get<VerificationApiResponse[]>(url, { headers });
+      const obs = this.http.get<VerificationApiResponse[]>(url,  { headers });
       const list = await lastValueFrom(obs);
       return list ?? null;
     } catch (err) {

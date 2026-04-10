@@ -102,6 +102,7 @@ export class TrajetComponent implements OnInit {
       axeId: raw.axeId,
       vehiculeId: raw.vehiculeId
     };
+    console.debug('[TrajetComponent] form submitted', payload);
 
     (async () => {
       try {

@@ -28,6 +28,14 @@ export class TrajetService {
       const headers = {
         Authorization: `Bearer ${token}`
       };
+      const structureId = this.auth.getUserStructure();
+    console.debug('[TrajetService] load called with structureId', structureId);
+    if(structureId) {
+       const url = `${this.baseUrl}?compagnieId=${encodeURIComponent(structureId ?? '')}`;
+       return this.http.get<Trajet[]>(url, { headers }).pipe(
+      tap(items => this.items$.next(items ?? []))
+    );
+    }
     return this.http.get<Trajet[]>(this.baseUrl, { headers }).pipe(
       tap(items => this.items$.next(items ?? []))
     );

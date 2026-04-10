@@ -11,19 +11,31 @@
 
       <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()" class="verify-form" >
         <input matInput id=numero type="text" formControlName="numero" placeholder="Entrez le numéro d’identification" />
-        
-        <button type="submit">Vérifier</button>
         <small *ngIf="verifyForm.get('numero')?.touched && verifyForm.get('numero')?.invalid">
-                Numero invalide
-            </small>
+                Identifiant invalide
+        </small>
+        <input matInput id=nom type="text" formControlName="nom" placeholder="Entrez le nom" />
+        <small *ngIf="verifyForm.get('nom')?.touched && verifyForm.get('nom')?.invalid">
+                Nom invalide
+        </small>
+        <input matInput id=prenom type="text" formControlName="prenom" placeholder="Entrez le prénom" />
+        <small *ngIf="verifyForm.get('prenom')?.touched && verifyForm.get('prenom')?.invalid">
+                Prénom invalide
+        </small>
+        <input matInput id=dateNaissance type="date" formControlName="dateNaissance" placeholder="Entrez la date de naissance" />
+        <small *ngIf="verifyForm.get('dateNaissance')?.touched && verifyForm.get('dateNaissance')?.invalid">
+                Date de naissance invalide
+        </small>
+        <button type="submit">Vérifier</button>
+
       </form>
-      
+
       <div class="result-area">
         <div *ngIf="loading" class="spinner-area">
           <mat-spinner diameter="40"></mat-spinner>
         </div>
-        <div *ngIf="foundPerson">
-          <app-personne-card [personne]="foundPerson"></app-personne-card>
+        <div *ngIf="isSucces && successMessage" class="found">
+            {{ successMessage }}
         </div>
         <div *ngIf="!loading && errorMessage" class="not-found">
           {{ errorMessage }}
