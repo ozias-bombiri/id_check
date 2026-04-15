@@ -20,6 +20,8 @@ import { TrajetComponent } from './trajet/trajet.component';
 import { PassagerComponent } from './passager/passager.component';
 import { PosteControleComponent } from './poste-controle/poste-controle.component';
 import { TrajetCheckerComponent } from './trajet-checker/trajet-checker.component';
+import { AxeCheckerComponent } from './axe-checker/axe-checker.component';
+import { TrajetCompagnieComponent } from './trajet-compagnie/trajet-compagnie.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -35,11 +37,12 @@ export const routes: Routes = [
   { path: 'param/localites', component: LocaliteComponent },
   { path: 'param/compagnies', component: CompagnieComponent },
   { path: 'param/types-vehicules', component: TypesVehiculesComponent },
-  {path: 'vehicules', component: VehiculeComponent, canActivate: [authGuard] },
   {path: 'logout', component: LogoutComponent, canActivate: [authGuard] },
   {path: 'axes', component: AxeComponent, canActivate: [authGuard] },
+  {path: 'checker/axes', component: AxeCheckerComponent, canActivate: [authGuard] },
   {path: 'trajets', component: TrajetComponent, canActivate: [authGuard] },
   {path: 'checker/trajets', component: TrajetCheckerComponent, canActivate: [authGuard] },
+  {path: 'compagnie/trajets', component: TrajetCompagnieComponent, canActivate: [authGuard] },
   {path: 'passagers', component: PassagerComponent, canActivate: [authGuard] },
   {path: 'postes', component: PosteControleComponent, canActivate: [authGuard] },
 ];

@@ -1,5 +1,5 @@
 export interface Localite {
-  id?: string; // UUID from backend
+  id: string; // UUID from backend
   libelle: string;
   description?: string;
   typeLocalite: 'urbaine' | 'rurale';

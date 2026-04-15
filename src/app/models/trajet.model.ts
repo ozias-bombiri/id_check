@@ -6,7 +6,7 @@ export interface Trajet {
   id?: string; // UUID
   libelle: string;
   description: string;
-  dateDepart?: Date;
+  dateDepart: Date;
   heureDepart: string;
   axe:Axe;
   vehicule:Vehicule;

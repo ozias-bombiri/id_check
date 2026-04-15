@@ -3,6 +3,7 @@ import { Personne } from '../models/Personne';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { AuthService } from './auth.service';
+import { CheckRequest, CheckResponse } from '../models/verification.model';
 
 export interface VerificationApiResponse {
   id: number | null;
@@ -18,20 +19,6 @@ export interface VerificationApiResponse {
   personne?: Personne | null;
 }
 
-export interface CheckRequest {
-
-  identifiant: string;
-  nom: string;
-  prenom: string;
-  dateNaissance: string;
-  userId?: any | null;
-
-}
-
-export interface CheckResponse {
-  checkResult: boolean;
-  libelleResult?: string | null;
-}
 
 @Injectable({ providedIn: 'root' })
 export class VerificationService {

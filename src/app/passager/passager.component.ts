@@ -23,6 +23,7 @@ import { PassagerService } from '../services/passager.service';
 import { VerificationService, VerificationApiResponse } from '../services/verification.service';
 import { Personne, PersonneCreate } from '../models/Personne';
 import { PassagerModalComponent } from '../passager-modal/passager-modal.component';
+import { CheckRequest, CheckResponse } from '../models/verification.model';
 
 
 @Component({
@@ -44,10 +45,16 @@ import { PassagerModalComponent } from '../passager-modal/passager-modal.compone
     ]
 })
 
-export class PassagerComponent implements OnInit {
-  trajets: Trajet[] = [];
-  displayedColumns: string[] = ['dateDepart', 'heureDepart', 'axe', 'vehicule', 'actions'];
 
+
+export class PassagerComponent implements OnInit {
+  today: string = new Date().toISOString().substring(0, 10);
+  trajets: Trajet[] = [];
+
+  filteredTrajets: Trajet[] = [];
+  filterDate: string | null = null;
+  displayedColumns: string[] = ['dateDepart', 'heureDepart', 'axe', 'vehicule', 'actions'];
+  personne: PersonneCreate | null = null;
   private readonly fb = inject(FormBuilder);
   private readonly trajetService = inject(TrajetService);
   private readonly axeService = inject(AxeService);
@@ -66,8 +73,8 @@ export class PassagerComponent implements OnInit {
     destinationId: [''],
     trajetId: ['', [Validators.required]],
     numero: [''],
-    nom: [{ value: '', disabled: true }],
-    prenom: [{ value: '', disabled: true }],
+    nom: ['' , [Validators.required ]],
+    prenom: ['', [Validators.required ]],
     personneId: ['']
 
   });
@@ -79,12 +86,12 @@ export class PassagerComponent implements OnInit {
   axes: Axe[] = [];
   vehicules: Vehicule[] = [];
 
-  ngOnInit() {
+    ngOnInit() {
     // subscribe to live list updates
     this.trajetService.getAll().subscribe((trajets: Trajet[]) => {
-      this.trajets = trajets;
-      console.debug('[TrajetComponent] trajets updated', trajets);
-    });
+    this.trajets = trajets;
+    this.applyFilter();
+  });
 
     // load reference data
     this.localiteService.load().subscribe({ next: () => this.localiteService.getAll().subscribe(list => (this.localites = list)), error: err => console.error('[TrajetComponent] failed to load localites', err) });
@@ -171,38 +178,71 @@ export class PassagerComponent implements OnInit {
   }
 
   checkNumero(){
-    const numero = this.passagerForm.value.numero as string;
-    console.debug('Checking numero:', numero);
+    const checkRequest: CheckRequest = {
+      identifiant: this.passagerForm.value.numero || '',
+      nom: this.passagerForm.value.nom || '',
+      prenom: this.passagerForm.value.prenom || '',
+    }
+    console.debug('Checking numero with request:', checkRequest);
 
     (async () => {
       try {
-          const resp: VerificationApiResponse | null = await this.verificationService.findByNumero(numero);
+          const resp: CheckResponse | null = await this.verificationService.checkIdentifiant(checkRequest);
           console.debug('Verification response:', resp);
-          if(!resp  || resp.resultat?.idCheckResult === 0 ){
-            this.snackBar.open('Personne non trouvée. Veuillez renseigner manuellement.', 'OK', { duration: 3000 });
-            this.passagerForm.get('nom')?.setValue('');
-            this.passagerForm.get('prenom')?.setValue('');
-            this.passagerForm.get('nom')?.enable();
-            this.passagerForm.get('prenom')?.enable();
+          if(!resp  || !resp.checkResult ){
+            this.snackBar.open('Personne non trouvée ', 'OK', { duration: 3000 });
+            //this.passagerForm.get('nom')?.setValue('');
+            //this.passagerForm.get('prenom')?.setValue('');
+            //this.passagerForm.get('nom')?.enable();
+            //this.passagerForm.get('prenom')?.enable();
           }
           else {
-          // If API indicates a successful id check and provides a personne, show the card
-          const isFound = resp.resultat?.idCheckResult === 1 && !!resp.personne;
-          if(isFound && resp.personne){
-            this.passagerForm.get('nom')?.setValue(resp.personne.nom);
-            this.passagerForm.get('prenom')?.setValue(resp.personne.prenom);
-            this.passagerForm.get('nom')?.disable();
-            this.passagerForm.get('prenom')?.disable();
-            this.passagerForm.get('personneId')?.setValue(resp.personne.id);
+            this.personne = {
+              nom: resp.libelleResult ? resp.libelleResult.split(' ')[0] : '',
+              prenom: resp.libelleResult ? resp.libelleResult.split(' ')[1] : '',
+              numero: this.passagerForm.value.numero || ''
+            }
+
           }
           //this.snackBar.open('Passager mis à jour', 'OK', { duration: 2000 });
-        }
+
       } catch (e) {
         console.error(e);
         this.snackBar.open('Erreur serveur', 'OK', { duration: 3000 });
       }
     })();
 
+  }
+
+   onFilterDate(event: any) {
+    this.filterDate = event.target.value;
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    if (!this.filterDate) {
+      this.filteredTrajets = this.trajets;
+      return;
+    }
+
+    this.filteredTrajets = this.trajets.filter(t => {
+      const d = new Date(t.dateDepart).toISOString().substring(0, 10);
+      return d === this.filterDate;
+    });
+  }
+
+  isPast(trajet: Trajet): boolean {
+    const today = new Date();
+    const trajetDate = new Date(trajet.dateDepart);
+    const heureDepart = trajet.heureDepart ? trajet.heureDepart.split(':') : null;
+    if(heureDepart && heureDepart.length === 2){
+      trajetDate.setHours(Number(heureDepart[0]), Number(heureDepart[1]), 0, 0);
+    }
+    // on enlève l'heure
+    //today.setHours(0,0,0,0);
+    //trajetDate.setHours(0,0,0,0);
+
+    return trajetDate < today ;
   }
 }
 

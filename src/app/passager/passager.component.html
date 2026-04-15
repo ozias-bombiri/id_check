@@ -32,7 +32,7 @@
 
               <mat-form-field appearance="outline">
                 <mat-label>Numéro</mat-label>
-                <input matInput formControlName="numero" (change)="checkNumero()">
+                <input matInput formControlName="numero" >
               </mat-form-field>
 
               <mat-form-field appearance="outline">
@@ -42,7 +42,7 @@
 
               <mat-form-field appearance="outline">
                 <mat-label>Prénom</mat-label>
-                <input matInput formControlName="prenom">
+                <input matInput formControlName="prenom" (change)="checkNumero()">
               </mat-form-field>
 
               <mat-form-field appearance="outline">
@@ -82,6 +82,10 @@
           </div>
 
           <div class="table-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Filtrer par date</mat-label>
+              <input matInput type="date" (change)="onFilterDate($event)">
+            </mat-form-field>
             <table mat-table [dataSource]="trajets" class="trajet-table">
 
               <ng-container matColumnDef="libelle">
@@ -117,6 +121,7 @@
 
                   <button mat-mini-fab color="primary"
                           (click)="addPassager(el)"
+                          [disabled]="isPast(el)"
                           matTooltip="Ajouter">
                     <mat-icon>person_add</mat-icon>
                   </button>

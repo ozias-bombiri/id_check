@@ -37,7 +37,7 @@ import { Localite } from '../models/localite.model';
 
 export class AxeComponent implements OnInit {
   axes: Axe[] = [];
-  displayedColumns: string[] = ['libelle', 'depart', 'arrive', 'description', 'actions'];
+  displayedColumns: string[] = ['libelle', 'depart', 'arrive', 'actions'];
 
   private readonly fb = inject(FormBuilder);
   private readonly axeService = inject(AxeService);

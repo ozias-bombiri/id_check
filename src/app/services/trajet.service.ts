@@ -10,7 +10,7 @@ import { Trajet , TrajetCreate} from '../models/trajet.model';
 })
 export class TrajetService {
   protected readonly http = inject(HttpClient);
-  private readonly baseUrl = EndpointConfig.BASE_URL + '/trajets';
+  private readonly baseUrl = EndpointConfig.BASE_URL + '/trajets-compagnie';
   private readonly auth = inject(AuthService);
 
   private readonly items$ = new BehaviorSubject<Trajet[]>([]);
@@ -32,6 +32,27 @@ export class TrajetService {
     console.debug('[TrajetService] load called with structureId', structureId);
     if(structureId) {
        const url = `${this.baseUrl}?compagnieId=${encodeURIComponent(structureId ?? '')}`;
+       return this.http.get<Trajet[]>(url, { headers }).pipe(
+      tap(items => this.items$.next(items ?? []))
+    );
+    }
+    return this.http.get<Trajet[]>(this.baseUrl, { headers }).pipe(
+      tap(items => this.items$.next(items ?? []))
+    );
+  }
+
+  /** Load from backend */
+  loadDate(Date: Date) {
+    const token = this.auth.getToken();
+      if (!token) throw new Error('User not authenticated');
+
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+      const structureId = this.auth.getUserStructure();
+    console.debug('[TrajetService] load called with structureId', structureId);
+    if(structureId) {
+       const url = `${this.baseUrl}?compagnieId=${encodeURIComponent(structureId ?? '')};date=${encodeURIComponent(Date.toISOString())}`;
        return this.http.get<Trajet[]>(url, { headers }).pipe(
       tap(items => this.items$.next(items ?? []))
     );

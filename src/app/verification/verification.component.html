@@ -22,10 +22,7 @@
         <small *ngIf="verifyForm.get('prenom')?.touched && verifyForm.get('prenom')?.invalid">
                 Prénom invalide
         </small>
-        <input matInput id=dateNaissance type="date" formControlName="dateNaissance" placeholder="Entrez la date de naissance" />
-        <small *ngIf="verifyForm.get('dateNaissance')?.touched && verifyForm.get('dateNaissance')?.invalid">
-                Date de naissance invalide
-        </small>
+
         <button type="submit">Vérifier</button>
 
       </form>

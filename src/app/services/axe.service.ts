@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 export class AxeService {
   protected readonly http = inject(HttpClient);
   private readonly baseUrl = EndpointConfig.BASE_URL + '/axes';
+  private readonly AXE_CHECKER_URL = EndpointConfig.BASE_URL + '/axes-checker';
   private readonly auth = inject(AuthService);
 
   private readonly items$ = new BehaviorSubject<Axe[]>([]);
@@ -29,6 +30,20 @@ export class AxeService {
         Authorization: `Bearer ${token}`
       };
     return this.http.get<Axe[]>(this.baseUrl, { headers }).pipe(
+      tap(items => this.items$.next(items ?? []))
+    );
+  }
+
+  /** Load from backend */
+  loadByChecher() {
+    const structureId = this.auth.getUserStructure();
+    const token = this.auth.getToken();
+      if (!token) throw new Error('User not authenticated');
+
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+    return this.http.get<Axe[]>(`${this.AXE_CHECKER_URL}/${structureId}`, { headers }).pipe(
       tap(items => this.items$.next(items ?? []))
     );
   }
