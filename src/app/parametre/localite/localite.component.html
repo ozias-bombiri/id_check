@@ -75,7 +75,9 @@
             <ng-container matColumnDef="typeLocalite">
               <th mat-header-cell *matHeaderCellDef>Type</th>
               <td mat-cell *matCellDef="let el">
-                {{ el.typeLocalite }}
+                <span class="type-badge" [ngClass]="el.typeLocalite">
+                  {{ el.typeLocalite }}
+                </span>
               </td>
             </ng-container>
 

@@ -62,46 +62,46 @@ export class AuthService {
   }
 
   async login(email: string, password: string): Promise<AuthResponse> {
-  const body = { email, password };
-  const res = await lastValueFrom(
-    this.http.post<AuthResponse>(this.AUTH_URL, body)
-  );
+    const body = { email, password };
+    const res = await lastValueFrom(
+      this.http.post<AuthResponse>(this.AUTH_URL, body)
+    );
 
-  if (res?.token) {
-    // 1. stocker token
-    localStorage.setItem(this.TOKEN_KEY, res.token);
+    if (res?.token) {
+      // 1. stocker token
+      localStorage.setItem(this.TOKEN_KEY, res.token);
 
-    const expiryTime = Date.now() + this.TOKEN_EXPIRY_TIME;
-    localStorage.setItem(this.TOKEN_EXPIRY_KEY, expiryTime.toString());
+      const expiryTime = Date.now() + this.TOKEN_EXPIRY_TIME;
+      localStorage.setItem(this.TOKEN_EXPIRY_KEY, expiryTime.toString());
 
 
-    // 2. récupérer user COMPLET
-    const userInfos = await this.getUser(res.user_id);
-    console.log('User infos retrieved after login :', userInfos);
-    if (userInfos?.id) {
-      // 3. stocker profil
-      localStorage.setItem(
-        this.USER_PROFILE_KEY,
-        JSON.stringify(userInfos.profile.libelle)
-      );
-      localStorage.setItem(this.USER_ID_KEY,userInfos.id);
-      localStorage.setItem(this.USER_STRUCTURE_KEY, userInfos.structureId);
+      // 2. récupérer user COMPLET
+      const userInfos = await this.getUser(res.user_id);
+      console.log('User infos retrieved after login :', userInfos);
+      if (userInfos?.id) {
+        // 3. stocker profil
+        localStorage.setItem(
+          this.USER_PROFILE_KEY,
+          JSON.stringify(userInfos.profile.libelle)
+        );
+        localStorage.setItem(this.USER_ID_KEY,userInfos.id);
+        localStorage.setItem(this.USER_STRUCTURE_KEY, userInfos.structureId);
 
-      // 4. notifier
-      this.userProfileSubject.next(userInfos.profile.libelle);
-      this.isAuthSubject.next(true);
+        // 4. notifier
+        this.userProfileSubject.next(userInfos.profile.libelle);
+        this.isAuthSubject.next(true);
 
-      console.log('Login successful, profile:', userInfos.profile.libelle);
+        console.log('Login successful, profile:', userInfos.profile.libelle);
+      }
     }
-  }
 
-  return res;
-}
+    return res;
+  }
 
   async getUser(userId: string): Promise<UserResponse> {
   const token = this.getToken();
   if (!token) throw new Error('User not authenticated');
-
+    console.log('Fetching user info for userId :', token);
   const headers = {
     Authorization: `Bearer ${token}`
   };

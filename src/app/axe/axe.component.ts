@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { LocaliteService } from '../services/localite.service';
 import { AxeService } from '../services/axe.service';
 import { Axe, AxeCreate } from '../models/axe.model';
@@ -30,14 +31,15 @@ import { Localite } from '../models/localite.model';
       MatFormFieldModule,
       MatInputModule,
       MatSelectModule,
-      MatSnackBarModule
+      MatSnackBarModule,
+      MatTooltipModule
     ]
 })
 
 
 export class AxeComponent implements OnInit {
   axes: Axe[] = [];
-  displayedColumns: string[] = ['libelle', 'depart', 'arrive', 'actions'];
+  displayedColumns: string[] = ['libelle', 'distance', 'tempsMoyen', 'trajet', 'actions'];
 
   private readonly fb = inject(FormBuilder);
   private readonly axeService = inject(AxeService);
@@ -47,6 +49,8 @@ export class AxeComponent implements OnInit {
   axeForm = this.fb.group({
 
     libelle: [''],
+    distance: [0],
+    tempsMoyen: [0],
     departId: [''],
     arriveId: [''],
     description: ['']
@@ -56,6 +60,8 @@ export class AxeComponent implements OnInit {
   editingId: string | null = null;
 
   localites: Localite[] = [];
+  itineraireIds: string[] = [];
+  selectedIntermediaire = '';
 
 
   ngOnInit() {
@@ -75,21 +81,28 @@ export class AxeComponent implements OnInit {
     this.isFormVisible = true;
     this.editingId = null;
     this.axeForm.reset();
+    this.itineraireIds = [];
+    this.selectedIntermediaire = '';
   }
 
   closeForm() {
     this.isFormVisible = false;
     this.editingId = null;
     this.axeForm.reset();
+    this.itineraireIds = [];
+    this.selectedIntermediaire = '';
   }
 
   onSubmit() {
     const raw = this.axeForm.value as any;
     const payload: AxeCreate = {
       libelle: raw.libelle,
+      distance: Number(raw.distance ?? 0),
+      tempsMoyen: Number(raw.tempsMoyen ?? 0),
       description: raw.description,
       departId: raw.departId,
-      arriveId: raw.arriveId
+      arriveId: raw.arriveId,
+      itineraire: [...this.itineraireIds]
     };
     console.debug('[AxeComponent] form submitted', payload);
     (async () => {
@@ -113,10 +126,30 @@ export class AxeComponent implements OnInit {
     this.editingId = axe.id || null;
     this.axeForm.patchValue({
       libelle: axe.libelle,
+      distance: axe.distance,
+      tempsMoyen: axe.tempsMoyen,
       departId: axe.depart?.id,
       arriveId: axe.arrive?.id,
+      description: axe.description,
     });
+    this.itineraireIds = axe.itineraire?.map(l => l.id) ?? [];
+    this.selectedIntermediaire = '';
     this.isFormVisible = true;
+  }
+
+  addLocaliteIntermediaire() {
+    if (this.selectedIntermediaire && !this.itineraireIds.includes(this.selectedIntermediaire)) {
+      this.itineraireIds = [...this.itineraireIds, this.selectedIntermediaire];
+      this.selectedIntermediaire = '';
+    }
+  }
+
+  removeLocaliteIntermediaire(index: number) {
+    this.itineraireIds = this.itineraireIds.filter((_, i) => i !== index);
+  }
+
+  getLocaliteLibelle(id: string): string {
+    return this.localites.find(l => l.id === id)?.libelle ?? id;
   }
 
   deleteVehicule(id: string | number | undefined) {

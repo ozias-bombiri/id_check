@@ -32,6 +32,21 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
+              <mat-label>Distance</mat-label>
+              <input matInput formControlName="distance" type="number" min="0">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Temps moyen</mat-label>
+              <input matInput formControlName="tempsMoyen" type="number" min="0">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-grid-full">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" rows="3"></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
               <mat-label>Départ</mat-label>
               <mat-select formControlName="departId">
                 <mat-option *ngFor="let l of localites" [value]="l.id">
@@ -49,6 +64,48 @@
               </mat-select>
             </mat-form-field>
 
+          </div>
+
+          <!-- ITINÉRAIRE -->
+          <div class="itineraire-section">
+            <h4>Itinéraire (localités intermédiaires)</h4>
+
+            <div class="itineraire-add">
+              <mat-form-field appearance="outline" class="itineraire-select">
+                <mat-label>Ajouter une étape</mat-label>
+                <mat-select [value]="selectedIntermediaire"
+                            (selectionChange)="selectedIntermediaire = $event.value">
+                  <mat-option *ngFor="let l of localites" [value]="l.id">
+                    {{ l.libelle }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <button mat-mini-fab color="primary" type="button"
+                      (click)="addLocaliteIntermediaire()"
+                      [disabled]="!selectedIntermediaire"
+                      matTooltip="Ajouter l'étape">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+
+            @if (itineraireIds.length > 0) {
+              <div class="itineraire-chips">
+                @for (id of itineraireIds; track id; let i = $index) {
+                  <div class="itineraire-chip">
+                    <span class="chip-index">{{ i + 1 }}</span>
+                    <span>{{ getLocaliteLibelle(id) }}</span>
+                    <button mat-icon-button type="button"
+                            (click)="removeLocaliteIntermediaire(i)"
+                            matTooltip="Retirer">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            } @else {
+              <p class="itineraire-empty">Aucune étape intermédiaire ajoutée</p>
+            }
           </div>
 
           <div class="form-actions">
@@ -81,17 +138,28 @@
               <td mat-cell *matCellDef="let el">{{ el.libelle }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="depart">
-              <th mat-header-cell *matHeaderCellDef>Départ</th>
-              <td mat-cell *matCellDef="let el">
-                {{ el.depart?.libelle }}
-              </td>
+            <ng-container matColumnDef="distance">
+              <th mat-header-cell *matHeaderCellDef>Distance</th>
+              <td mat-cell *matCellDef="let el">{{ el.distance }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="arrive">
-              <th mat-header-cell *matHeaderCellDef>Arrivée</th>
+            <ng-container matColumnDef="tempsMoyen">
+              <th mat-header-cell *matHeaderCellDef>Temps moyen</th>
+              <td mat-cell *matCellDef="let el">{{ el.tempsMoyen }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="trajet">
+              <th mat-header-cell *matHeaderCellDef>Trajet</th>
               <td mat-cell *matCellDef="let el">
-                {{ el.arrive?.libelle }}
+                <span class="trajet-route">
+                  <span class="route-point depart">{{ el.depart?.libelle }}</span>
+                  @for (loc of el.itineraire; track loc.id) {
+                    <span class="route-sep">—</span>
+                    <span class="route-point">{{ loc.libelle }}</span>
+                  }
+                  <span class="route-sep">—</span>
+                  <span class="route-point arrive">{{ el.arrive?.libelle }}</span>
+                </span>
               </td>
             </ng-container>
 

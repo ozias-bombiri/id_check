@@ -35,6 +35,10 @@
   gap: 15px;
 }
 
+.form-grid-full {
+  grid-column: 1 / -1;
+}
+
 .form-actions {
   margin-top: 20px;
   display: flex;
@@ -75,4 +79,109 @@
 .empty-state mat-icon {
   font-size: 48px;
   margin-bottom: 10px;
+}
+
+/* ITINÉRAIRE - formulaire */
+.itineraire-section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed #e2e8f0;
+
+  h4 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+  }
+}
+
+.itineraire-add {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .itineraire-select {
+    flex: 1;
+    max-width: 360px;
+  }
+}
+
+.itineraire-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.itineraire-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 20px;
+  padding: 4px 4px 4px 12px;
+  font-size: 13px;
+  color: #0369a1;
+
+  .chip-index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0369a1;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  button.mat-mdc-icon-button {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      color: #0369a1;
+    }
+  }
+}
+
+.itineraire-empty {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* ITINÉRAIRE - tableau */
+.trajet-route {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.route-point {
+  font-size: 13px;
+  color: #334155;
+
+  &.depart {
+    font-weight: 600;
+    color: #0369a1;
+  }
+
+  &.arrive {
+    font-weight: 600;
+    color: #15803d;
+  }
+}
+
+.route-sep {
+  color: #94a3b8;
+  font-size: 13px;
 }

@@ -1,7 +1,11 @@
-<div class="home">
+<div class="page">
 
-  <section class="hero">
-    <div class="hero-content container">
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="page-header">
+      <h2>Gestion des passagers</h2>
+    </div>
 
       <!-- FORMULAIRE -->
       @if (isFormVisible) {
@@ -10,11 +14,26 @@
             <h3>Ajouter un passager</h3>
           </div>
 
+          <!-- MODE SELECTOR -->
+          <div class="mode-selector">
+            <p style="font-weight: 500; margin-bottom: 12px;">Choisir le mode d'identité:</p>
+            <div style="display: flex; gap: 24px;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="radio" [value]="'sharedCode'" [(ngModel)]="identityMode" name="mode">
+                <span>Identifiant partagé via USSD (identifiant + code)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="radio" [value]="'manualIdentity'" [(ngModel)]="identityMode" name="mode">
+                <span>Identité manuelle (identifiant + nom + prénom)</span>
+              </label>
+            </div>
+          </div>
+
           <form [formGroup]="passagerForm" (ngSubmit)="onSubmit()">
             <input formControlName="trajetId" type="hidden">
 
+            <!-- Infos trajet (date, heure, axe) -->
             <div class="form-grid">
-
               <mat-form-field appearance="outline">
                 <mat-label>Date</mat-label>
                 <input matInput formControlName="dateDepart" type="date" >
@@ -29,41 +48,65 @@
                 <mat-label>Axe</mat-label>
                 <input matInput formControlName="axe" type="text" >
               </mat-form-field>
+            </div>
 
-              <mat-form-field appearance="outline">
-                <mat-label>Numéro</mat-label>
+            <!-- Numéro et identité -->
+            <div class="form-grid">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Identifiant unique</mat-label>
                 <input matInput formControlName="numero" >
               </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <mat-label>Nom</mat-label>
-                <input matInput formControlName="nom">
-              </mat-form-field>
+              @if (identityMode === 'sharedCode') {
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Code partagé</mat-label>
+                  <input matInput formControlName="sharedCode" >
+                </mat-form-field>
+              }
 
-              <mat-form-field appearance="outline">
-                <mat-label>Prénom</mat-label>
-                <input matInput formControlName="prenom" (change)="checkNumero()">
-              </mat-form-field>
+              @if (identityMode === 'manualIdentity') {
+                <mat-form-field appearance="outline">
+                  <mat-label>Nom</mat-label>
+                  <input matInput formControlName="nom">
+                </mat-form-field>
 
+                <mat-form-field appearance="outline">
+                  <mat-label>Prénom</mat-label>
+                  <input matInput formControlName="prenom">
+                </mat-form-field>
+              }
+            </div>
+
+            <!-- Localités -->
+            <div class="form-grid">
               <mat-form-field appearance="outline">
                 <mat-label>Départ</mat-label>
                 <mat-select formControlName="departId">
-                  <mat-option *ngFor="let l of localites" [value]="l.id">{{ l.libelle }}</mat-option>
+                  <mat-option
+                    *ngFor="let l of localites; let i = index"
+                    [value]="l.id"
+                    [disabled]="i === localites.length - 1">
+                    {{ l.libelle }}
+                  </mat-option>
                 </mat-select>
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>Destination</mat-label>
                 <mat-select formControlName="destinationId">
-                  <mat-option *ngFor="let l of localites" [value]="l.id">{{ l.libelle }}</mat-option>
+                  <mat-option
+                    *ngFor="let l of localites; let i = index"
+                    [value]="l.id"
+                    [disabled]="i === 0">
+                    {{ l.libelle }}
+                  </mat-option>
                 </mat-select>
               </mat-form-field>
-
             </div>
 
             <div class="form-actions">
               <button mat-raised-button color="primary">
-                {{ editingId ? 'Mettre à jour' : 'Ajouter' }}
+              Ajouter
               </button>
               <button mat-stroked-button type="button" (click)="closeForm()">
                 Annuler
@@ -86,7 +129,9 @@
               <mat-label>Filtrer par date</mat-label>
               <input matInput type="date" (change)="onFilterDate($event)">
             </mat-form-field>
-            <table mat-table [dataSource]="trajets" class="trajet-table">
+
+            @if (filteredTrajets.length > 0) {
+              <table mat-table [dataSource]="filteredTrajets" class="trajet-table">
 
               <ng-container matColumnDef="libelle">
                 <th mat-header-cell *matHeaderCellDef>Libellé</th>
@@ -126,8 +171,8 @@
                     <mat-icon>person_add</mat-icon>
                   </button>
 
-                  <button mat-mini-fab color="accent"
-                          (click)="listePassager(el.id)"
+                    <button mat-mini-fab color="accent"
+                      (click)="listePassager(el)"
                           matTooltip="Voir liste">
                     <mat-icon>list</mat-icon>
                   </button>
@@ -139,6 +184,12 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
             </table>
+            } @else {
+              <div class="empty-state">
+                <mat-icon>search_off</mat-icon>
+                <p>Aucun trajet pour cette date</p>
+              </div>
+            }
           </div>
 
         </div>
@@ -149,6 +200,5 @@
         </div>
       }
 
-    </div>
-  </section>
+  </div>
 </div>

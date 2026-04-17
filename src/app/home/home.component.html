@@ -1,25 +1,148 @@
-<div class="home">
+<div class="home-page">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Portail de Vérification d’Identité des passagers</h1>
-      <p>
-        Id voyageur permet de Vérifier instantanément l’identité d’un citoyen à partir de son
-        numéro d’identification unique.
-      </p>
-      <p>Allez la la page <a routerLink="/verifier" routerLinkActive="active"> vérifiez un numéro </a></p>
+  <section class="hero-section">
+    <div class="hero-copy">
+      <span class="eyebrow">Portail national de suivi des mobilites</span>
+      <h1>
+        <span class="title-line">Centraliser et securiser</span>
+        <span class="title-line accent">les donnees passagers</span>
+      </h1>
+
+      <div class="hero-intro-card">
+        <p class="hero-lead">
+          Id Passager regroupe l'enregistrement des voyageurs, le suivi des trajets
+          et le controle des identites dans une interface unique.
+        </p>
+
+        <div class="hero-brief">
+          <h2>Un espace unique pour exploiter les donnees de transport</h2>
+          <div class="brief-lines">
+            <div class="brief-line">
+              <mat-icon>groups</mat-icon>
+              <span>Enregistrer les passagers rapidement</span>
+            </div>
+            <div class="brief-line">
+              <mat-icon>timeline</mat-icon>
+              <span>Consulter trajets et historiques</span>
+            </div>
+            <div class="brief-line">
+              <mat-icon>settings_suggest</mat-icon>
+              <span>Configurer axes, localites et vehicules</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- CONFIANCE -->
-  <section class="trust">
-    <h2>Pourquoi utiliser ce portail ?</h2>
-    <div class="trust-list">
-      <div class="trust-item">🔒 Sécurité des données</div>
-      <div class="trust-item">⚡ Vérification rapide</div>
-      <div class="trust-item">📊 Données fiables</div>
-      <div class="trust-item">🌍 Accessible 24h/24</div>
+  <section class="value-section">
+    <div class="section-heading">
+      <span class="eyebrow">Pourquoi cette application</span>
+      <h2>Un outil de travail concu pour les besoins du terrain</h2>
+      <p>
+        La plateforme structure les donnees de mobilite pour faciliter les controles, les analyses et la coordination.
+      </p>
+    </div>
+
+    <div class="value-grid">
+      <article class="value-card">
+        <span class="value-index">01</span>
+        <mat-icon>fact_check</mat-icon>
+        <h3>Fiabilite des informations</h3>
+        <p>Chaque passager peut etre rattache a une identite controlee et exploitable.</p>
+      </article>
+
+      <article class="value-card">
+        <span class="value-index">02</span>
+        <mat-icon>flash_on</mat-icon>
+        <h3>Exploitation rapide</h3>
+        <p>Les equipes consultent rapidement les trajets, verifications et historiques disponibles.</p>
+      </article>
+
+      <article class="value-card">
+        <span class="value-index">03</span>
+        <mat-icon>hub</mat-icon>
+        <h3>Pilotage centralise</h3>
+        <p>Compagnies, axes, vehicules et localites sont geres dans un meme environnement.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="workflow-section">
+    <div class="section-heading">
+      <span class="eyebrow">Fonctionnement</span>
+      <h2>Un parcours simple en trois etapes</h2>
+    </div>
+
+    <div class="workflow-grid">
+      <article class="workflow-step">
+        <span class="step-number">1</span>
+        <mat-icon>domain_add</mat-icon>
+        <h3>Configurer le referentiel</h3>
+        <p>Creation des localites, types de vehicules, compagnies, axes et trajets.</p>
+      </article>
+
+      <article class="workflow-step">
+        <span class="step-number">2</span>
+        <mat-icon>badge</mat-icon>
+        <h3>Enregistrer les passagers</h3>
+        <p>Association d'un voyageur a un trajet avec verification de son identifiant.</p>
+      </article>
+
+      <article class="workflow-step">
+        <span class="step-number">3</span>
+        <mat-icon>travel_explore</mat-icon>
+        <h3>Consulter et controler</h3>
+        <p>Recherche des historiques, controle des trajets et consultation des donnees consolidees.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="modules-section">
+    <div class="section-heading">
+      <span class="eyebrow">Modules cles</span>
+      <h2>Les principaux usages disponibles dans le portail</h2>
+    </div>
+
+    <div class="modules-grid">
+      <a routerLink="/passagers" class="module-card">
+        <span class="module-icon teal"><mat-icon>groups</mat-icon></span>
+        <h3>Passagers</h3>
+        <p>Ajouter des passagers sur un trajet et acceder aux listes associees.</p>
+      </a>
+
+      <a routerLink="/trajets" class="module-card">
+        <span class="module-icon blue"><mat-icon>route</mat-icon></span>
+        <h3>Trajets</h3>
+        <p>Organiser les deplacements selon les axes, horaires et vehicules.</p>
+      </a>
+
+      <a routerLink="/historique" class="module-card">
+        <span class="module-icon amber"><mat-icon>history</mat-icon></span>
+        <h3>Historique</h3>
+        <p>Retrouver les mouvements et consultations de donnees deja enregistrees.</p>
+      </a>
+
+      <a routerLink="/verifier" class="module-card">
+        <span class="module-icon emerald"><mat-icon>verified</mat-icon></span>
+        <h3>Verification</h3>
+        <p>Verifier les informations d'identite et renforcer la coherence des enregistrements.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="trust-section">
+    <div class="trust-banner">
+      <div>
+        <span class="eyebrow">Engagement</span>
+        <h2>Une solution orientee fiabilite, tracabilite et disponibilite</h2>
+      </div>
+
+      <div class="trust-points">
+        <span>Acces continu au portail</span>
+        <span>Donnees consolidees</span>
+        <span>Cadre operationnel partage</span>
+      </div>
     </div>
   </section>
 

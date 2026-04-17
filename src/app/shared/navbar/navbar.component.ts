@@ -17,7 +17,7 @@ export class NavbarComponent {
   isAuthenticated = false;
 
   menuItems = [
-    { label: 'Accueil', route: '/', auth: false },
+    { label: 'Accueil', route: '/' },
     { label: 'Se connecter', route: '/connexion', auth: false },
     { label: "S'inscrire", route: '/register', auth: false },
     { label: 'Demandes d\'inscription', route: '/register', roles: ['admin'] },
@@ -28,16 +28,15 @@ export class NavbarComponent {
     { label: 'Roles', route: '/admin/roles', auth: true, roles: ['admin'] },
     { label: 'Localites', route: '/param/localites', auth: true, roles: ['admin'] },
     { label: 'Compagnies', route: '/param/compagnies', auth: true, roles: ['admin'] },
-    { label: 'Trajets', route: '/trajets', auth: true, roles: ['admin'] },
     { label: 'Axes', route: 'checker/axes', auth: true, roles: ['checker'] },
     { label: 'Trajets', route: 'checker/trajets', auth: true, roles: ['checker'] },
-    { label: 'Trajets', route: 'compagnie/trajets', auth: true, roles: ['compagnie'] },
-    { label: 'Vehicules', route: 'compagnie/vehicules', auth: true, roles: ['admin', 'compagnie'] },
-    { label: 'Type de vehicules', route: '/param/types-vehicules', auth: true, roles: ['admin'] },
-    { label: 'Aide', route: '/aide', auth: false },
     { label: 'Axes', route: '/axes', auth: true, roles: ['admin', 'compagnie'] },
+    { label: 'Vehicules', route: 'compagnie/vehicules', auth: true, roles: ['compagnie'] },
+    { label: 'Trajets', route: 'compagnie/trajets', auth: true, roles: ['compagnie'] },
+    { label: 'Type de vehicules', route: '/param/types-vehicules', auth: true, roles: ['admin'] },
     { label: 'Passagers', route: '/passagers', auth: true, roles: ['compagnie'] },
     { label: 'Postes', route: '/postes', auth: true, roles: ['admin'] },
+    { label: 'Aide', route: '/aide' },
     { label: 'Se déconnecter', route: '/logout', auth: true },
   ];
 

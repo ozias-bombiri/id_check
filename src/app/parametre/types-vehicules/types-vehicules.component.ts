@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TypeVehiculeService } from '../../../app/services/type-vehicule.service';
 import { TypeVehicule, TypeVehiculeCreate } from '../../../app/models/type-vehicule.model';
 
@@ -22,6 +23,7 @@ import { TypeVehicule, TypeVehiculeCreate } from '../../../app/models/type-vehic
     MatTableModule,
     MatIconModule,
     MatSnackBarModule,
+    MatTooltipModule,
   ],
   templateUrl: './types-vehicules.component.html',
   styleUrls: ['./types-vehicules.component.scss'],
@@ -39,6 +41,7 @@ export class TypesVehiculesComponent implements OnInit {
   data: TypeVehicule[] = [];
   displayedColumns = ['libelle', 'description', 'actions'];
   editingId?: string;
+  isFormVisible = false;
 
   ngOnInit(): void {
     this.service.load().subscribe({
@@ -52,6 +55,18 @@ export class TypesVehiculesComponent implements OnInit {
   select(item: TypeVehicule) {
     this.editingId = item.id;
     this.form.patchValue({ libelle: item.libelle, description: item.description });
+    this.isFormVisible = true;
+  }
+
+  showForm() {
+    this.isFormVisible = true;
+    this.editingId = undefined;
+    this.form.reset();
+  }
+
+  closeForm() {
+    this.isFormVisible = false;
+    this.resetForm();
   }
 
   async save() {
@@ -89,6 +104,7 @@ export class TypesVehiculesComponent implements OnInit {
 
   resetForm() {
     this.editingId = undefined;
+    this.isFormVisible = false;
     this.form.reset();
   }
 }

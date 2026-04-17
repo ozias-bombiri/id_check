@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 export class LocaliteService {
   protected readonly http = inject(HttpClient);
   private readonly baseUrl = EndpointConfig.BASE_URL + '/localites';
+  private readonly localiteAxeUrl = EndpointConfig.BASE_URL + '/axe-localites';
   private readonly auth = inject(AuthService);
   private readonly items$ = new BehaviorSubject<Localite[]>([]);
 
@@ -28,6 +29,22 @@ export class LocaliteService {
         Authorization: `Bearer ${token}`
       };
     return this.http.get<Localite[]>(this.baseUrl, { headers }).pipe(
+      tap(items => this.items$.next(items ?? []))
+    );
+  }
+
+  /** Load items from backend */
+  loadByAxe(axeId: string) {
+    const token = this.auth.getToken();
+      if (!token) throw new Error('User not authenticated');
+
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+    return this.http.get<Localite[]>(this.localiteAxeUrl, {
+      headers,
+      params: { axeId }
+    }).pipe(
       tap(items => this.items$.next(items ?? []))
     );
   }

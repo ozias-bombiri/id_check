@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CompagnieService } from '../../services/compagnie.service';
 import { Compagnie, CompagnieCreate } from '../../models/compagnie.model';
 
@@ -22,6 +23,7 @@ import { Compagnie, CompagnieCreate } from '../../models/compagnie.model';
     MatTableModule,
     MatIconModule,
     MatSnackBarModule,
+    MatTooltipModule,
   ],
   templateUrl: './compagnie.component.html',
   styleUrls: ['./compagnie.component.scss'],
@@ -43,6 +45,7 @@ export class CompagnieComponent implements OnInit {
   data: Compagnie[] = [];
   displayedColumns = ['abrege', 'nomCompagnie', 'telephone', 'email', 'actions'];
   editingId?: string;
+  isFormVisible = false;
 
   ngOnInit(): void {
     this.compagnieService.load().subscribe({
@@ -63,6 +66,18 @@ export class CompagnieComponent implements OnInit {
       siege: item.siege,
       description: item.description,
     });
+    this.isFormVisible = true;
+  }
+
+  showForm() {
+    this.isFormVisible = true;
+    this.editingId = undefined;
+    this.form.reset();
+  }
+
+  closeForm() {
+    this.isFormVisible = false;
+    this.resetForm();
   }
 
   async save() {
@@ -101,6 +116,7 @@ export class CompagnieComponent implements OnInit {
 
   resetForm() {
     this.editingId = undefined;
+    this.isFormVisible = false;
     this.form.reset();
   }
 }

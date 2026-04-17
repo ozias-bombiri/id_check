@@ -1,18 +1,22 @@
-import { Compagnie } from './compagnie.model';
 import { Localite } from './localite.model';
-import { TypeVehicule } from './type-vehicule.model';
 
 export interface Axe {
   id: string; // UUID
   libelle: string;
+  distance:number;
+  tempsMoyen:number;
   description: string;
   depart?: Localite;
   arrive?: Localite;
+  itineraire?: Localite[];
 }
 
 export interface AxeCreate {
   libelle: string;
+  distance:number;
+  tempsMoyen:number;
   description: string;
   departId: string;
   arriveId: string;
+  itineraire: string[];
 }

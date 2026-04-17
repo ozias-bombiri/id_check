@@ -1,45 +1,110 @@
-<div class="types-vehicules-page">
-  <form [formGroup]="form" class="types-form" (ngSubmit)="save()">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Libellé</mat-label>
-      <input matInput formControlName="libelle" />
-    </mat-form-field>
+<div class="page">
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Description</mat-label>
-      <input matInput formControlName="description" />
-    </mat-form-field>
+  <div class="container">
 
-    <div class="actions">
-      <button mat-flat-button color="primary" type="submit">{{ editingId ? 'Modifier' : 'Ajouter' }}</button>
-      <button mat-button type="button" (click)="resetForm()">Annuler</button>
+    <!-- HEADER -->
+    <div class="page-header">
+      <h2>Gestion des types de véhicules</h2>
+
+      @if (!isFormVisible) {
+        <button mat-raised-button color="primary" (click)="showForm()">
+          <mat-icon>add</mat-icon>
+          Ajouter un type
+        </button>
+      }
     </div>
-  </form>
 
-  <table mat-table [dataSource]="data" class="mat-elevation-z1 types-table">
-    <ng-container matColumnDef="libelle">
-      <th mat-header-cell *matHeaderCellDef>Libellé</th>
-      <td mat-cell *matCellDef="let element">{{ element.libelle }}</td>
-    </ng-container>
+    <!-- FORMULAIRE -->
+    @if (isFormVisible) {
+      <div class="card form-card">
 
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef>Description</th>
-      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
-    </ng-container>
+        <div class="card-header">
+          <h3>{{ editingId ? 'Modifier le type' : 'Ajouter un type de véhicule' }}</h3>
+        </div>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="primary" (click)="select(element)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="remove(element.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+        <form [formGroup]="form" (ngSubmit)="save()">
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+          <div class="form-grid">
+
+            <mat-form-field appearance="outline">
+              <mat-label>Libellé</mat-label>
+              <input matInput formControlName="libelle" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <input matInput formControlName="description" />
+            </mat-form-field>
+
+          </div>
+
+          <div class="form-actions">
+            <button mat-raised-button color="primary" type="submit">
+              {{ editingId ? 'Mettre à jour' : 'Ajouter' }}
+            </button>
+            <button mat-stroked-button type="button" (click)="closeForm()">
+              Annuler
+            </button>
+          </div>
+
+        </form>
+      </div>
+    }
+
+    <!-- TABLE -->
+    @if (data.length > 0) {
+      <div class="card">
+
+        <div class="card-header">
+          <h3>Liste des types de véhicules</h3>
+        </div>
+
+        <div class="table-container">
+          <table mat-table [dataSource]="data" class="custom-table">
+
+            <ng-container matColumnDef="libelle">
+              <th mat-header-cell *matHeaderCellDef>Libellé</th>
+              <td mat-cell *matCellDef="let el">{{ el.libelle }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let el">{{ el.description }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let el" class="actions">
+
+                <button mat-mini-fab color="primary"
+                        (click)="select(el)"
+                        matTooltip="Modifier">
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-mini-fab color="warn"
+                        (click)="remove(el.id)"
+                        matTooltip="Supprimer">
+                  <mat-icon>delete</mat-icon>
+                </button>
+
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          </table>
+        </div>
+
+      </div>
+    } @else {
+      <div class="empty-state">
+        <mat-icon>directions_car</mat-icon>
+        <p>Aucun type de véhicule trouvé</p>
+        <span>Cliquez sur "Ajouter" pour commencer</span>
+      </div>
+    }
+
+  </div>
 </div>

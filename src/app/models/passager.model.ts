@@ -7,7 +7,7 @@ import { Vehicule } from './vehicule.model';
 export interface Passager {
   id?: string; // UUID
 
-  dateDepart?: Localite;
+  depart?: Localite;
   destination: Localite;
   trajet:Trajet;
   personne:Personne;
@@ -17,5 +17,7 @@ export interface PassagerCreate {
   departId: string;
   destinationId: string;
   trajetId:string;
+  numero: string;
+  sharedCode?: string;
   personne: PersonneCreate;
 }
