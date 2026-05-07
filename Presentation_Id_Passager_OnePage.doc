@@ -1,0 +1,49 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0 Calibri;}{\f1 Segoe UI;}}
+\paperw11906\paperh16838\margl900\margr900\margt900\margb900
+\viewkind4\uc1
+\pard\sa120\qc\f1\fs44\b ID PASSAGER\b0\par
+\pard\sa80\qc\f0\fs22 Plateforme de gestion et de suivi des passagers du transport public\par
+\pard\sa180\qc\f0\fs18 Document de presentation - One Page\par
+
+\pard\sa120\qj\brdrt\brdrs\brdrw20\brdrl\brdrs\brdrw20\brdrb\brdrs\brdrw20\brdrr\brdrs\brdrw20\box\fs22\b 1. Vision de l'application\b0\par
+\pard\qj\sa120\fs21
+Id Passager centralise l'enregistrement des voyageurs, la verification des identites et le suivi des trajets dans une interface unique.
+La solution aide les acteurs du transport a disposer de donnees fiables, exploitables et partagees.\par
+
+\pard\sa120\qj\brdrt\brdrs\brdrw20\brdrl\brdrs\brdrw20\brdrb\brdrs\brdrw20\brdrr\brdrs\brdrw20\box\fs22\b 2. Fonctionnalites principales\b0\par
+\pard\qj\sa60\fs21
+\bullet\tab Gestion des comptes compagnies (inscription, validation, acces espace dedie)\par
+\pard\qj\sa60\fs21
+\bullet\tab Parametrage metier : localites, axes, trajets, vehicules\par
+\pard\qj\sa60\fs21
+\bullet\tab Gestion des passagers : ajout, consultation, historique\par
+\pard\qj\sa60\fs21
+\bullet\tab Controle et verification des identites passagers\par
+\pard\qj\sa120\fs21
+\bullet\tab Export des listes de passagers (PDF / Excel)\par
+
+\pard\sa120\qj\brdrt\brdrs\brdrw20\brdrl\brdrs\brdrw20\brdrb\brdrs\brdrw20\brdrr\brdrs\brdrw20\box\fs22\b 3. Valeur ajoutee\b0\par
+\pard\qj\sa60\fs21
+\bullet\tab Fiabilite des donnees grace au referentiel unique\par
+\pard\qj\sa60\fs21
+\bullet\tab Rapidite d'exploitation pour les equipes terrain\par
+\pard\qj\sa60\fs21
+\bullet\tab Meilleure coordination entre acteurs du transport\par
+\pard\qj\sa120\fs21
+\bullet\tab Traçabilite des operations et des mouvements passagers\par
+
+\pard\sa120\qj\brdrt\brdrs\brdrw20\brdrl\brdrs\brdrw20\brdrb\brdrs\brdrw20\brdrr\brdrs\brdrw20\box\fs22\b 4. Parcours d'usage\b0\par
+\pard\qj\sa60\fs21
+\b Etape 1 :\b0  Inscription de la compagnie\par
+\pard\qj\sa60\fs21
+\b Etape 2 :\b0  Validation du compte et ouverture de l'espace\par
+\pard\qj\sa60\fs21
+\b Etape 3 :\b0  Parametrage (vehicules, axes, trajets)\par
+\pard\qj\sa120\fs21
+\b Etape 4 :\b0  Gestion quotidienne des passagers et consultation des donnees\par
+
+\pard\sa180\qc\brdrt\brdrs\brdrw15\fs18
+Document de presentation - Application Id Passager\line
+Contact support : contact@portail-idcheck.com\par
+}

@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>Liste des passagers</h2>
+
+<div mat-dialog-content class="modal-content">
+
+  <div class="trajet-summary" *ngIf="data.trajet as trajet">
+    <div class="summary-item">
+      <span class="label">Date</span>
+      <strong>{{ formatDate(trajet.dateDepart) }}</strong>
+    </div>
+    <div class="summary-item">
+      <span class="label">Heure</span>
+      <strong>{{ trajet.heureDepart || '-' }}</strong>
+    </div>
+    <div class="summary-item">
+      <span class="label">Vehicule</span>
+      <strong>{{ trajet.vehicule.immatriculation || '-' }}</strong>
+    </div>
+    <div class="summary-item summary-route">
+      <span class="label">Localites de l'axe</span>
+      <strong>{{ trajetRoute }}</strong>
+    </div>
+  </div>
+
+  <div class="export-actions" *ngIf="hasPassagers">
+    <button mat-stroked-button color="primary" (click)="exportExcel()">
+      <mat-icon>table_view</mat-icon>
+      Exporter Excel
+    </button>
+    <button mat-raised-button color="primary" (click)="exportPdf()">
+      <mat-icon>picture_as_pdf</mat-icon>
+      Exporter PDF
+    </button>
+  </div>
+
+  <table class="custom-table" *ngIf="hasPassagers">
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Identifiant</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Départ</th>
+        <th>Destination</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let p of data.passagers; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ p.personne.numero }}</td>
+        <td>{{ p.personne.nom }}</td>
+        <td>{{ p.personne.prenom }}</td>
+        <td>{{ getLocaliteLabel(p.depart) }}</td>
+        <td>{{ getLocaliteLabel(p.destination) }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="empty" *ngIf="!hasPassagers">
+    Aucun passager trouvé
+  </div>
+
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" mat-dialog-close>
+    Fermer
+  </button>
+</div>

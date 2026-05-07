@@ -1,0 +1,144 @@
+@import '../../styles/design-tokens.scss';
+@import '../../styles/mixins.scss';
+
+.axe-checker {
+  font-family: $font-family-base;
+  color: $color-text-secondary;
+}
+
+/* ==================== HERO SECTION ====================*/
+.hero {
+  @include hero-section;
+
+  .hero-content {
+    max-width: 600px;
+    margin: 0 auto;
+
+    h1 {
+      margin-bottom: $spacing-6;
+    }
+
+    p {
+      margin-bottom: $spacing-8;
+      @include body-large;
+      opacity: 0.95;
+
+      a {
+        text-decoration: none;
+        color: white;
+        font-weight: $font-weight-semibold;
+        transition: opacity $transition-base;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}
+
+/* ==================== VERIFY FORM ====================*/
+.verify-form {
+  display: flex;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  @include respond-to('sm') {
+    gap: $spacing-1;
+  }
+
+  input {
+    flex: 1;
+    min-width: 200px;
+    @include form-input;
+
+    @include respond-to('sm') {
+      min-width: 150px;
+    }
+  }
+
+  button {
+    @include btn-primary;
+  }
+}
+
+/* ==================== STEPS SECTION ====================*/
+.steps {
+  @include section;
+  text-align: center;
+
+  h2 {
+    @include heading-2;
+    margin-bottom: $spacing-8;
+  }
+
+  .step-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-8;
+
+    @include respond-to('sm') {
+      gap: $spacing-6;
+    }
+
+    .step {
+      background: $color-bg-light;
+      padding: $spacing-8;
+      border-radius: $radius-lg;
+      transition: all $transition-base;
+
+      &:hover {
+        background: $color-bg-pale;
+        transform: translateY(-4px);
+        box-shadow: $shadow-medium;
+      }
+
+      span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        background: $color-primary-light;
+        color: white;
+        border-radius: $radius-full;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-lg;
+        margin-bottom: $spacing-4;
+      }
+
+      p {
+        color: $color-text-secondary;
+        @include body-normal;
+      }
+    }
+  }
+}
+.trust {
+  background: #f1f5f9;
+  padding: 4rem 1rem;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 2rem;
+  }
+
+  .trust-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+
+    .trust-item {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+  }
+}
+
+ol{
+    align-items: left;
+}
+

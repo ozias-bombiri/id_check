@@ -1,0 +1,287 @@
+// ========================================
+// Global Typography & Reset Styles
+// ========================================
+
+@import './design-tokens.scss';
+@import './mixins.scss';
+
+/* Typography Reset */
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-normal;
+  color: $color-text-primary;
+  background: $color-bg-white;
+  margin: 0;
+  padding: 0;
+}
+
+/* Headings */
+h1 {
+  @include heading-1;
+  color: $color-text-primary;
+  margin: $spacing-6 0 $spacing-4;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+h2 {
+  @include heading-2;
+  color: $color-text-primary;
+  margin: $spacing-6 0 $spacing-4;
+}
+
+h3 {
+  @include heading-3;
+  color: $color-text-primary;
+  margin: $spacing-5 0 $spacing-3;
+}
+
+h4 {
+  @include heading-4;
+  color: $color-text-secondary;
+  margin: $spacing-4 0 $spacing-2;
+}
+
+h5, h6 {
+  @include body-large;
+  color: $color-text-secondary;
+  margin: $spacing-4 0 $spacing-2;
+}
+
+/* Paragraphs */
+p {
+  @include body-normal;
+  margin: 0 0 $spacing-4 0;
+  color: $color-text-secondary;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Links */
+a {
+  color: $color-primary-light;
+  text-decoration: none;
+  transition: color $transition-base;
+
+  &:hover {
+    color: $color-primary;
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: darken($color-primary-light, 20%);
+  }
+
+  &:focus {
+    outline: 2px solid $color-primary-light;
+    outline-offset: 2px;
+  }
+}
+
+/* Strong & Emphasis */
+strong, b {
+  font-weight: $font-weight-semibold;
+}
+
+em, i {
+  font-style: italic;
+}
+
+/* Lists */
+ul, ol {
+  margin: 0 0 $spacing-4 0;
+  padding-left: $spacing-6;
+
+  li {
+    margin-bottom: $spacing-2;
+    line-height: $line-height-relaxed;
+  }
+}
+
+dl {
+  margin: 0;
+
+  dt {
+    font-weight: $font-weight-semibold;
+    margin-top: $spacing-3;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  dd {
+    margin-left: $spacing-4;
+    margin-bottom: $spacing-3;
+  }
+}
+
+/* Code */
+code, pre {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: $font-size-sm;
+  background: $color-bg-lighter;
+  border-radius: $radius-input;
+  color: $color-primary;
+}
+
+code {
+  padding: $spacing-1 $spacing-2;
+}
+
+pre {
+  padding: $spacing-4;
+  overflow-x: auto;
+  margin: 0 0 $spacing-4 0;
+
+  code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+}
+
+/* HR */
+hr {
+  border: none;
+  border-top: 1px solid $color-border-light;
+  margin: $spacing-8 0;
+}
+
+/* Blockquote */
+blockquote {
+  border-left: 4px solid $color-primary-light;
+  padding-left: $spacing-4;
+  margin: $spacing-4 0;
+  color: $color-text-muted;
+  font-style: italic;
+}
+
+/* Small */
+small {
+  @include body-tiny;
+  color: $color-text-muted;
+}
+
+/* Form Elements */
+input, textarea, select, button {
+  font-family: inherit;
+}
+
+label {
+  @include body-small;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-2;
+  cursor: pointer;
+}
+
+/* Tables */
+table {
+  @include data-table;
+}
+
+/* Utility Classes for Typography */
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.font-light {
+  font-weight: $font-weight-light;
+}
+
+.font-normal {
+  font-weight: $font-weight-normal;
+}
+
+.font-medium {
+  font-weight: $font-weight-medium;
+}
+
+.font-semibold {
+  font-weight: $font-weight-semibold;
+}
+
+.font-bold {
+  font-weight: $font-weight-bold;
+}
+
+.line-clamp-1 {
+  @include truncate;
+}
+
+.line-clamp-2 {
+  @include truncate-lines(2);
+}
+
+.line-clamp-3 {
+  @include truncate-lines(3);
+}
+
+.line-clamp-4 {
+  @include truncate-lines(4);
+}
+
+/* Color Utilities */
+
+.text-primary {
+  color: $color-primary;
+}
+
+.text-success {
+  @include text-success;
+}
+
+.text-error {
+  @include text-error;
+}
+
+.text-warning {
+  @include text-warning;
+}
+
+.text-info {
+  @include text-info;
+}
+
+.text-muted {
+  @include text-muted;
+}
